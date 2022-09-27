@@ -23,3 +23,17 @@ TLDR; A budget manager that is:
 - *Simple*
 - *Fast*
 - *Organized*
+
+### User Stories
+These are some descriptions of future functionality that should be added:
+
+1. As a user, I want to be able to update my bank balance quickly
+2. As a user, I want to be able to add income sources, and have them represented as a lump sum, *while also* being 
+able to see the breakdown
+3. As a user, I want to be able to add expenses to my expense record that subtract from my income.
+4. As a user, I want to be able to see my surplus funds and set a savings goal (%) for the remaining funds.
+5. As a user, I want to be able to categorize the income and expenses freely, even mixing the two if possible.
+6. As a user, I want to be able to set interest rates on debt that I hold and see the effects of paying off early.
+7. As a user, I want receipts weekly, monthly, and yearly showing my financial history.
+8. As a user, I want to be able to add individual expenses that I want to record for future reference.
+9. As a user, I want to be able to plan long term savings goals with interest. 
