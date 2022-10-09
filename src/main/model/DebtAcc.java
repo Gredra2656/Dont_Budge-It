@@ -1,39 +1,41 @@
 package model;
 
-public class DebtAcc {
-    int value;
-    String name;
-    double interest;
+import java.math.BigDecimal;
 
-    public DebtAcc(String name, int value, double interest) {
+public class DebtAcc implements HasInterest {
+    BigDecimal value;
+    String name;
+    BigDecimal interest;
+
+    public DebtAcc(String name, BigDecimal value, BigDecimal interest) {
         this.value = value;
         this.name = name;
         this.interest = interest;
     }
 
-    //MODIFIES: this
-    //EFFECTS: Computes the addition to the debt at the end of the period.
-    public int computeDebtInterest() {
-        return 0; // TODO
+    //EFFECTS: Calculates addition to debt -- SEE INTERFACE
+    @Override
+    public void calculateInterest() {
+        this.value *= interest + 1;
     }
 
-    //REQUIRES: payment > 0, payment < value (value of debt)
-    //MODIFIES: this
-    //EFFECTS: Subtracts payment from the debt and returns true if this pays the debt fully
-    public boolean payDebt(int payment) {
-        // TODO
+    //EFFECTS: Adds value to the debt -- SEE INTERFACE
+    @Override
+    public void addValue(BigDecimal payment) {
+        this.value += payment;
+    }
+
+    //EFFECTS: Pays debt by amount payment -- SEE INTERFACE
+    @Override
+    public boolean subValue(BigDecimal payment) {
+        this.value -= payment;
+        if (this.value == 0) {
+            return true;
+        }
         return false;
     }
 
-    public int getValue() {
+    public BigDecimal getValue() {
         return value;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getInterest() {
-        return interest;
     }
 }

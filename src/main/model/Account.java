@@ -2,141 +2,171 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.math.BigDecimal;
 
 public class Account {
-    int balance; // Balance in cents
-    double savingsPercentGoal; // Savings goal as percentage
-    List sources; // Catalogue of sources
+    BigDecimal balance; // Balance in cents
+    BigDecimal savingsPercentGoal; // Savings goal as percentage
+    List<Source> sources; // Catalogue of sources
     SavingsAcc savings; // A tracker for long term savings
-    ArrayList debts; // A list of debts for the user to fill.
-    ArrayList receipts; // A list of Receipts stored as strings.
+    ArrayList<DebtAcc> debts; // A list of debts for the user to fill.
+    ArrayList<String> receipts = new ArrayList<>(); // A list of Receipts stored as strings.
 
-    //EFFECTS: Creates a fresh account with no values, and default period.
+    //EFFECTS: Creates a fresh account with no values.
     public Account() {
-        this.balance = 0;
-        this.savingsPercentGoal = 0;
-        this.sources = new ArrayList();
-        this.savings = new SavingsAcc(0,.01);
-        this.debts = new ArrayList<DebtAcc>();
-        this.receipts = new ArrayList<String>();
+        this.balance = BigDecimal.valueOf(0);
+        this.savingsPercentGoal = BigDecimal.valueOf(0);
+        this.sources = new ArrayList<>();
+        this.savings = new SavingsAcc(0,0);
+        this.debts = new ArrayList<>();
     }
 
     //REQUIRES: val != 0, name IS NOT duplicate
     //MODIFIES: this
     //EFFECTS: Adds an income/expense to the list of sources
-    public void addSource(String name, int val) {
-        // TODO
+    public void addSource(String name, BigDecimal val) {
+        Source s = new Source(name, val);
+        this.sources.add(s);
     }
 
     //MODIFIES: this
-    //EFFECTS: Removes the specified source from the source list, if not found return false
+    //EFFECTS: Removes the specified source from the source list, if not found return false, else true
     public boolean removeSource(String sourceName) {
-        // TODO
+        List<Source> sources = this.getSources();
+        for (int i = 0; i < this.sources.size(); i++) {
+            Source s = sources.get(i);
+            if (Objects.equals(s.name, sourceName)) {
+                sources.remove(i);
+                return true;
+            }
+        }
         return false;
     }
 
     //REQUIRES: that lst is a list of all sources for an account.
     //EFFECTS: Return a value, positive or negative, that represents inbound
     //         or outbound funds from balance for the month.
-    public int calculateSurplus() {
-        return 0; // TODO
+    public BigDecimal calculateSurplus() {
+        List<Source> sources = getSources();
+        BigDecimal s = 0;
+        for (Source source : sources) {
+            s += source.getValue();
+        }
+        return s;
     }
 
     //REQUIRES: that lst is a list of income sources
     //EFFECTS: Return the sum of all income sources
-    public int calculateIncome() {
-        return 0; // TODO
+    public BigDecimal calculateIncome() {
+        List<Source> sources = getSources();
+        BigDecimal income = 0;
+
+        for (Source source : sources) {
+
+            if (source.getValue() > 0) {
+                income += source.getValue();
+            }
+        }
+        return income;
     }
 
     //REQUIRES: that lst is a list of expense sources
     //EFFECTS: Return the sum of all expenses.
-    public int calculateExpenses() {
-        return -1; // TODO
+    public BigDecimal calculateExpenses() {
+        List<Source> sources = getSources();
+        BigDecimal expenses = 0;
+
+        for (Source source : sources) {
+
+            if (source.getValue() < 0) {
+                expenses -= source.getValue();
+            }
+        }
+        expenses *= -1;
+        return expenses;
     }
 
     //MODIFIES: this
     //EFFECTS: Returns a receipt of incoming and outgoing expenses that month, with updated balance and values
     public String returnReceipt() {
-        return ""; // TODO
-    }
+        BigDecimal income = calculateIncome();
+        BigDecimal expense = calculateExpenses();
+        BigDecimal surplus = calculateSurplus();
 
-    // FORMATTING FOR RETURN RECEIPT // TODO
-    // MAYBE MONTH HERE??
-    // "Income: " + income
-    // "Expenses: " + expenses
-    // "------"
-    // "Total: " + total
+        return "Income: " + income + "\nExpenses: " + expense + "\n" + "------" + "\nTotal: " + surplus;
+    }
 
     //REQUIRES: val > 0
     //MODIFIES: this
     //EFFECTS: Adds val to balance
-    public void addBalance(int val) {
+    public void addBalance(BigDecimal val) {
         this.balance += val;
     }
 
     //REQUIRES: val > 0, val <= balance
     //MODIFIES: this
     //EFFECTS: Subtracts val from balance
-    public void withdrawBalance(int val) {
+    public void withdrawBalance(BigDecimal val) {
         this.balance -= val;
     }
 
     //MODIFIES: this
     //EFFECTS: Updates debt, savings, and balance, and records a receipt
     public void computeNextPeriod() {
-        // TODO
+        this.balance += calculateSurplus();
+        this.savings.calculateInterest();
+        for (DebtAcc debts : debts) {
+            debts.calculateInterest();
+        }
+        this.receipts.add(returnReceipt());
     }
 
     //REQUIRES: amt > 0
     //MODIFIES: this
     //EFFECTS: Adds a debt to the list of debts in the account
-    public void addDebt(int amt) {
-        // TODO
+    public void addDebt(String name, BigDecimal amt, BigDecimal interest) {
+        DebtAcc debt = new DebtAcc(name, amt, interest);
+        this.debts.add(debt);
     }
 
-    //REQUIRES: 0 <= prd <= 2
-    //MODIFIES: this
-    //EFFECTS: Changes the period to Weekly, monthly, or yearly based on prd
-    public void changePeriod(int prd) {
-        // TODO
+    public void depositSavings(BigDecimal amt) {
+        SavingsAcc savings = this.savings;
+        savings.addValue(amt);
     }
 
-    //REQUIRES: amt > 0
-    //MODIFIES: this
-    //EFFECTS: Deposits an amount to the SavingsAcc attached to the Account object
-    public void depositSavings(int amt) {
-        // TODO
+    //EFFECTS: Returns savings balance
+    public BigDecimal getSavingsBal() {
+        return this.savings.getBal();
     }
 
-    public int getBalance() {
+    //REQUIRES: That a savings goal has been set
+    //EFFECTS: Returns an integer based on your surplus that month and your savings goal
+    public BigDecimal suggestSavings(BigDecimal surplus) {
+        return surplus * this.savingsPercentGoal;
+    }
+
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
-
-    public double getSavingsPercentGoal() {
+    public BigDecimal getSavingsPercentGoal() {
         return savingsPercentGoal;
     }
 
-    public void setSavingsPercentGoal(double savingsPercentGoal) {
+    public void setSavingsPercentGoal(BigDecimal savingsPercentGoal) {
         this.savingsPercentGoal = savingsPercentGoal;
     }
 
-    public List getSources() {
+    public List<Source> getSources() {
         return sources;
     }
 
-    public void setSources(List sources) {
-        this.sources = sources;
-    }
-
-    public ArrayList getReceipts() {
+    public ArrayList<String> getReceipts() {
         return receipts;
     }
 
-    public ArrayList getDebts() {
+    public ArrayList<DebtAcc> getDebts() {
         return debts;
     }
 

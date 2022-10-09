@@ -17,19 +17,25 @@ public class DebtAccTest {
     }
 
     @Test
-    public void testComputeDebtInterest() {
-        testDebt.computeDebtInterest();
-        assertEquals(INIT_VAL * (1 + testDebt.getInterest()), testDebt.getValue());
+    public void testCalculateInterestOnDebt() {
+        testDebt.calculateInterest();
+        assertEquals((INIT_VAL * (1 + INIT_INT)), testDebt.getValue());
     }
 
     @Test
     public void testPayDebt() {
-        assertFalse(testDebt.payDebt(4000));
+        assertFalse(testDebt.subValue(4000));
         assertEquals(1000, testDebt.getValue());
     }
 
     @Test
     public void testPayDebtFully() {
-        assertTrue(testDebt.payDebt(5000));
+        assertTrue(testDebt.subValue(5000));
+    }
+
+    @Test
+    public void testAddDebtValue() {
+        testDebt.addValue(50);
+        assertEquals(5050, testDebt.getValue());
     }
 }

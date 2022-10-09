@@ -22,20 +22,21 @@ public class AccountTest {
         assertEquals(0 ,testAcc.getBalance());
         assertEquals(0, testAcc.getSavingsPercentGoal());
         assertTrue(testAcc.getReceipts().isEmpty());
-        assertTrue(testAcc.getSources().isEmpty());
+        assertFalse(testAcc.getSources().isEmpty());
         assertEquals(0, testAcc.getSavings().getBal());
-        assertEquals(.01, testAcc.getSavings().getInterest());
+        assertEquals(0, testAcc.getSavings().getInterest());
         assertTrue(testAcc.getDebts().isEmpty());
     }
 
     @Test
     public void testAddSource() {
         testAcc.addSource("Temp Work",  10000);
+        assertEquals(5, testAcc.getSources().size());
     }
 
     @Test
     public void testRemoveSource() {
-        testAcc.removeSource("test source");
+        assertTrue(testAcc.removeSource("test source"));
     }
 
     @Test
@@ -62,7 +63,7 @@ public class AccountTest {
     @Test
     public void testCalculateNoIncome() {
         testAcc = new Account();
-        assertEquals(0, testAcc);
+        assertEquals(0, testAcc.calculateIncome());
     }
 
     @Test
@@ -78,9 +79,9 @@ public class AccountTest {
 
     @Test
     public void testReturnReceipt() {
-        int income = testAcc.calculateIncome();
-        int expense = testAcc.calculateExpenses();
-        int surplus = testAcc.calculateSurplus();
+        double income = testAcc.calculateIncome();
+        double expense = testAcc.calculateExpenses();
+        double surplus = testAcc.calculateSurplus();
         String receipt;
 
         receipt = "Income: "+ income +
@@ -104,7 +105,51 @@ public class AccountTest {
     @Test
     public void testComputeNextPeriod() {
         testAcc.addBalance(5000);
+        testAcc.addDebt("Credit Card", 1000, .2);
+        testAcc.getSavings().setInterest(.01);
+        testAcc.depositSavings(500);
 
-        // START HERE TODO
+        testAcc.computeNextPeriod();
+
+        assertEquals(5000+5000+500-360-1, testAcc.getBalance());
+        assertEquals(1000 * 1.2, testAcc.getDebts().get(0).getValue());
+        assertEquals(500 * 1.01, testAcc.getSavings().getBal());
+        assertEquals(1, testAcc.getReceipts().size());
+
+        /*List<DebtAcc> debts = testAcc.getDebts();
+        SavingsAcc savings = testAcc.getSavings();
+        List<Source> sources = testAcc.getSources();
+
+        for (int d = 0; d < debts.size(); d++) {
+            DebtAcc dSpec = debts.get(d);
+            dSpec.calculateInterest();
+        }
+        savings.calculateInterest();
+
+        int surplus = testAcc.calculateSurplus();*/
+    }
+
+    @Test
+    public void testAddDebt() {
+        testAcc.addDebt("Credit Card2", 100, .2);
+        assertEquals(1, testAcc.getDebts().size());
+    }
+
+    @Test
+    public void testDepositSavings() {
+        testAcc.depositSavings(10000);
+        assertEquals(10000, testAcc.getSavingsBal());
+    }
+
+    @Test
+    public void testGetSavingsBal() {
+        assertEquals(0, testAcc.getSavingsBal());
+    }
+
+    @Test
+    public void testSuggestSavings() {
+        testAcc.setSavingsPercentGoal(.5);
+        assertEquals(testAcc.getSavingsPercentGoal() * testAcc.calculateSurplus(),
+                testAcc.suggestSavings(testAcc.calculateSurplus()));
     }
 }

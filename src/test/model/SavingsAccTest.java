@@ -20,26 +20,26 @@ public class SavingsAccTest {
     }
 
     @Test
-    public void testComputeInterest() {
-        testSave.computeInterest();
+    public void testCalculateInterest() {
+        testSave.calculateInterest();
         assertEquals(500 * 1.01, testSave.getBal());
     }
 
     @Test
-    public void testAddBal() {
-        testSave.addBal(50);
+    public void testAddValue() {
+        testSave.addValue(50);
         assertEquals(550, testSave.getBal());
     }
 
     @Test
-    public void testWithdrawBal() {
-        assertTrue(testSave.withdrawBal(50));
+    public void testSubValue() {
+        assertFalse(testSave.subValue(50));
         assertEquals(450, testSave.getBal());
     }
 
     @Test
-    public void testWithdrawBalFail() {
-        assertFalse(testSave.withdrawBal(501));
-        assertEquals(500, testSave.getBal());
+    public void testSubValueCompletely() {
+        assertTrue(testSave.subValue(500));
+        assertEquals(0, testSave.getBal());
     }
 }

@@ -1,10 +1,12 @@
 package model;
 
+import java.math.BigDecimal;
+
 public class Source {
     String name;
-    int value;
+    BigDecimal value;
 
-    public Source(String name, int val) {
+    public Source(String name, BigDecimal val) {
         this.name = name;
         this.value = val;
     }
@@ -13,7 +15,7 @@ public class Source {
         return name;
     }
 
-    public int getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 }

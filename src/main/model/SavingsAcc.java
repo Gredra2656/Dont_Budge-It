@@ -1,50 +1,50 @@
 package model;
 
-public class SavingsAcc {
-    int bal;
-    int goal;
-    double interest;
+import java.math.BigDecimal;
+
+public class SavingsAcc implements HasInterest {
+    BigDecimal bal;
+    BigDecimal interest;
 
     //REQUIRES: initial >= 0
     //EFFECTS: Creates savings account with given initial balance and interest
-    public SavingsAcc(int initial, double interest) {
+    public SavingsAcc(BigDecimal initial, BigDecimal interest) {
         this.bal = initial;
         this.interest = interest;
     }
 
-    //MODIFIES: this
-    //EFFECTS: Adds interest onto your savings at the end of the month based on interest
-    public int computeInterest() {
-        return 0; // TODO
+    //EFFECTS: Withdraws from savings -- SEE INTERFACE
+    @Override
+    public boolean subValue(BigDecimal payment) {
+        bal.subtract(payment);
+        if (bal == BigDecimal.valueOf(0)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    //REQUIRES: amt > 0
-    //MODIFIES: this
-    //EFFECTS: adds amt to savings balance
-    public void addBal(int amt) {
-        // TODO
+    //EFFECTS: Calculates interest on your savings -- SEE INTERFACE
+    @Override
+    public void calculateInterest() {
+        bal = bal.multiply (interest + 1);
     }
 
-    //REQUIRES: amt > 0
-    //MODIFIES: this
-    //EFFECTS: subtracts amt from savings balance. Returns true if possible, false if insufficient funds.
-    public boolean withdrawBal(int amt) {
-        return false; // TODO
+    //EFFECTS: Deposits payment to savings -- SEE INTERFACE
+    @Override
+    public void addValue(BigDecimal payment) {
+        bal += payment;
     }
 
-    public int getBal() {
+    public BigDecimal getBal() {
         return bal;
     }
 
-    public void setBal(int bal) {
-        this.bal = bal;
-    }
-
-    public double getInterest() {
+    public BigDecimal getInterest() {
         return interest;
     }
 
-    public void setInterest(double interest) {
+    public void setInterest(BigDecimal interest) {
         this.interest = interest;
     }
 }
