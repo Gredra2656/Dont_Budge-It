@@ -32,7 +32,16 @@ public class DebtAcc implements HasInterest {
         return this.value.equals(BigDecimal.valueOf(0));
     }
 
+    @Override
+    public void setInterest(BigDecimal interest) {
+        this.interest = interest;
+    }
+
     public BigDecimal getValue() {
         return value;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }
