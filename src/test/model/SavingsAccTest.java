@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SavingsAccTest {
@@ -10,36 +12,36 @@ public class SavingsAccTest {
 
     @BeforeEach
     public void setup() {
-        testSave = new SavingsAcc(500, .01);
+        testSave = new SavingsAcc(BigDecimal.valueOf(500), BigDecimal.valueOf(.01));
     }
 
     @Test
     public void testSavingsAccConstructor() {
-        assertEquals(500, testSave.getBal());
-        assertEquals(.01, testSave.getInterest());
+        assertEquals(BigDecimal.valueOf(500), testSave.getBal());
+        assertEquals(BigDecimal.valueOf(.01), testSave.getInterest());
     }
 
     @Test
     public void testCalculateInterest() {
         testSave.calculateInterest();
-        assertEquals(500 * 1.01, testSave.getBal());
+        assertEquals(BigDecimal.valueOf(500 * 1.01).stripTrailingZeros(), testSave.getBal().stripTrailingZeros());
     }
 
     @Test
     public void testAddValue() {
-        testSave.addValue(50);
-        assertEquals(550, testSave.getBal());
+        testSave.addValue(BigDecimal.valueOf(50));
+        assertEquals(BigDecimal.valueOf(550), testSave.getBal());
     }
 
     @Test
     public void testSubValue() {
-        assertFalse(testSave.subValue(50));
-        assertEquals(450, testSave.getBal());
+        assertFalse(testSave.subValue(BigDecimal.valueOf(50)));
+        assertEquals(BigDecimal.valueOf(450), testSave.getBal());
     }
 
     @Test
     public void testSubValueCompletely() {
-        assertTrue(testSave.subValue(500));
-        assertEquals(0, testSave.getBal());
+        assertTrue(testSave.subValue(BigDecimal.valueOf(500)));
+        assertEquals(BigDecimal.valueOf(0), testSave.getBal());
     }
 }

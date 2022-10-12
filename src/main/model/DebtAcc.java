@@ -16,23 +16,20 @@ public class DebtAcc implements HasInterest {
     //EFFECTS: Calculates addition to debt -- SEE INTERFACE
     @Override
     public void calculateInterest() {
-        this.value *= interest + 1;
+        this.value = value.multiply(interest.add(BigDecimal.valueOf(1)));
     }
 
     //EFFECTS: Adds value to the debt -- SEE INTERFACE
     @Override
     public void addValue(BigDecimal payment) {
-        this.value += payment;
+        this.value = value.add(payment);
     }
 
     //EFFECTS: Pays debt by amount payment -- SEE INTERFACE
     @Override
     public boolean subValue(BigDecimal payment) {
-        this.value -= payment;
-        if (this.value == 0) {
-            return true;
-        }
-        return false;
+        this.value = value.subtract(payment);
+        return this.value.equals(BigDecimal.valueOf(0));
     }
 
     public BigDecimal getValue() {

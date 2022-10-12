@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SourceTest {
@@ -10,12 +12,12 @@ public class SourceTest {
 
     @BeforeEach
     public void setup() {
-        testSource = new Source("Grocery Clerk Income", 500);
+        testSource = new Source("Grocery Clerk Income", BigDecimal.valueOf(500));
     }
 
     @Test
     public void testSourceConstructor() {
         assertEquals("Grocery Clerk Income", testSource.getName());
-        assertEquals(500, testSource.getValue());
+        assertEquals(BigDecimal.valueOf(500), testSource.getValue());
     }
 }

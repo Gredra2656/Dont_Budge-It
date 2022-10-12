@@ -16,24 +16,20 @@ public class SavingsAcc implements HasInterest {
     //EFFECTS: Withdraws from savings -- SEE INTERFACE
     @Override
     public boolean subValue(BigDecimal payment) {
-        bal.subtract(payment);
-        if (bal == BigDecimal.valueOf(0)) {
-            return true;
-        } else {
-            return false;
-        }
+        bal = bal.subtract(payment);
+        return bal.equals(BigDecimal.valueOf(0));
     }
 
     //EFFECTS: Calculates interest on your savings -- SEE INTERFACE
     @Override
     public void calculateInterest() {
-        bal = bal.multiply (interest + 1);
+        bal = bal.multiply(interest.add(BigDecimal.valueOf(1)));
     }
 
     //EFFECTS: Deposits payment to savings -- SEE INTERFACE
     @Override
     public void addValue(BigDecimal payment) {
-        bal += payment;
+        bal = bal.add(payment);
     }
 
     public BigDecimal getBal() {

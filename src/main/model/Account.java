@@ -18,7 +18,7 @@ public class Account {
         this.balance = BigDecimal.valueOf(0);
         this.savingsPercentGoal = BigDecimal.valueOf(0);
         this.sources = new ArrayList<>();
-        this.savings = new SavingsAcc(0,0);
+        this.savings = new SavingsAcc(BigDecimal.valueOf(0),BigDecimal.valueOf(0));
         this.debts = new ArrayList<>();
     }
 
@@ -49,9 +49,9 @@ public class Account {
     //         or outbound funds from balance for the month.
     public BigDecimal calculateSurplus() {
         List<Source> sources = getSources();
-        BigDecimal s = 0;
+        BigDecimal s = BigDecimal.valueOf(0);
         for (Source source : sources) {
-            s += source.getValue();
+            s = s.add(source.getValue());
         }
         return s;
     }
@@ -60,12 +60,12 @@ public class Account {
     //EFFECTS: Return the sum of all income sources
     public BigDecimal calculateIncome() {
         List<Source> sources = getSources();
-        BigDecimal income = 0;
+        BigDecimal income = BigDecimal.valueOf(0);
 
         for (Source source : sources) {
 
-            if (source.getValue() > 0) {
-                income += source.getValue();
+            if (source.getValue().compareTo(BigDecimal.ZERO) > 0) {
+                income = income.add(source.getValue());
             }
         }
         return income;
@@ -75,15 +75,15 @@ public class Account {
     //EFFECTS: Return the sum of all expenses.
     public BigDecimal calculateExpenses() {
         List<Source> sources = getSources();
-        BigDecimal expenses = 0;
+        BigDecimal expenses = BigDecimal.valueOf(0);
 
         for (Source source : sources) {
 
-            if (source.getValue() < 0) {
-                expenses -= source.getValue();
+            if (source.getValue().compareTo(BigDecimal.ZERO) < 0) {
+                expenses = expenses.subtract(source.getValue());
             }
         }
-        expenses *= -1;
+        expenses = expenses.multiply(BigDecimal.valueOf(-1));
         return expenses;
     }
 
@@ -101,20 +101,20 @@ public class Account {
     //MODIFIES: this
     //EFFECTS: Adds val to balance
     public void addBalance(BigDecimal val) {
-        this.balance += val;
+        this.balance = this.balance.add(val);
     }
 
     //REQUIRES: val > 0, val <= balance
     //MODIFIES: this
     //EFFECTS: Subtracts val from balance
     public void withdrawBalance(BigDecimal val) {
-        this.balance -= val;
+        this.balance = this.balance.subtract(val);
     }
 
     //MODIFIES: this
     //EFFECTS: Updates debt, savings, and balance, and records a receipt
     public void computeNextPeriod() {
-        this.balance += calculateSurplus();
+        this.balance = this.balance.add(calculateSurplus());
         this.savings.calculateInterest();
         for (DebtAcc debts : debts) {
             debts.calculateInterest();
@@ -143,7 +143,7 @@ public class Account {
     //REQUIRES: That a savings goal has been set
     //EFFECTS: Returns an integer based on your surplus that month and your savings goal
     public BigDecimal suggestSavings(BigDecimal surplus) {
-        return surplus * this.savingsPercentGoal;
+        return surplus.multiply(this.savingsPercentGoal);
     }
 
     public BigDecimal getBalance() {

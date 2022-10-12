@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DebtAccTest {
@@ -13,29 +15,30 @@ public class DebtAccTest {
 
     @BeforeEach
     public void setup() {
-        testDebt = new DebtAcc("Credit Card", INIT_VAL, INIT_INT);
+        testDebt = new DebtAcc("Credit Card", BigDecimal.valueOf(INIT_VAL), BigDecimal.valueOf(INIT_INT));
     }
 
     @Test
     public void testCalculateInterestOnDebt() {
         testDebt.calculateInterest();
-        assertEquals((INIT_VAL * (1 + INIT_INT)), testDebt.getValue());
+        assertEquals(BigDecimal.valueOf(INIT_VAL * (1 + INIT_INT)).stripTrailingZeros(),
+                testDebt.getValue().stripTrailingZeros());
     }
 
     @Test
     public void testPayDebt() {
-        assertFalse(testDebt.subValue(4000));
-        assertEquals(1000, testDebt.getValue());
+        assertFalse(testDebt.subValue(BigDecimal.valueOf(4000)));
+        assertEquals(BigDecimal.valueOf(1000), testDebt.getValue());
     }
 
     @Test
     public void testPayDebtFully() {
-        assertTrue(testDebt.subValue(5000));
+        assertTrue(testDebt.subValue(BigDecimal.valueOf(5000)));
     }
 
     @Test
     public void testAddDebtValue() {
-        testDebt.addValue(50);
-        assertEquals(5050, testDebt.getValue());
+        testDebt.addValue(BigDecimal.valueOf(50));
+        assertEquals(BigDecimal.valueOf(5050), testDebt.getValue());
     }
 }
