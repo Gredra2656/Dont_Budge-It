@@ -40,6 +40,7 @@ public class SavingsAcc implements HasInterest {
         return interest;
     }
 
+    @Override
     public void setInterest(BigDecimal interest) {
         this.interest = interest;
     }

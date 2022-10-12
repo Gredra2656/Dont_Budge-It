@@ -41,4 +41,10 @@ public class DebtAccTest {
         testDebt.addValue(BigDecimal.valueOf(50));
         assertEquals(BigDecimal.valueOf(5050), testDebt.getValue());
     }
+
+    @Test
+    public void testSetInterest() {
+        testDebt.setInterest(BigDecimal.valueOf(.3));
+        assertEquals(BigDecimal.valueOf(.3), testDebt.interest);
+    }
 }

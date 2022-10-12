@@ -94,7 +94,8 @@ public class Account {
         BigDecimal expense = calculateExpenses();
         BigDecimal surplus = calculateSurplus();
 
-        return "Income: " + income + "\nExpenses: " + expense + "\n" + "------" + "\nTotal: " + surplus;
+        return "Income: " + income + "\nExpenses: " + expense + "\n" + "------" + "\nTotal: " + surplus
+                + "\nRecommended Savings: " + savingsPercentGoal.multiply(calculateSurplus());
     }
 
     //REQUIRES: val > 0
@@ -112,7 +113,13 @@ public class Account {
     }
 
     //MODIFIES: this
-    //EFFECTS: Updates debt, savings, and balance, and records a receipt
+    //EFFECTS: Updates balance to val
+    public void updateBalance(BigDecimal val) {
+        this.balance = val;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Updates debt, savings, and balance, records a receipt, and recommends a savings deposit for that month
     public void computeNextPeriod() {
         this.balance = this.balance.add(calculateSurplus());
         this.savings.calculateInterest();
@@ -120,6 +127,7 @@ public class Account {
             debts.calculateInterest();
         }
         this.receipts.add(returnReceipt());
+        System.out.println("We recommend saving: " + savingsPercentGoal.multiply(calculateSurplus()));
     }
 
     //REQUIRES: amt > 0
@@ -130,9 +138,35 @@ public class Account {
         this.debts.add(debt);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Removes a debt with the given name from your account. If name found, true, else false.
+    public boolean removeDebt(String name) {
+        for (int i = 0; i < this.debts.size(); i++) {
+            DebtAcc d = debts.get(i);
+            if (d.name.equals(name)) {
+                debts.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //REQUIRES: amt > 0
+    //MODIFIES: this
+    //EFFECTS: Moves cash from account balance to savings.
     public void depositSavings(BigDecimal amt) {
         SavingsAcc savings = this.savings;
+        this.balance = balance.subtract(amt);
         savings.addValue(amt);
+    }
+
+    //REQUIRES: amt > 0, amt <= savings.balance
+    //MODIFIES: this
+    //EFFECTS: Moves cash from savings to account balance
+    public void withdrawSavings(BigDecimal amt) {
+        SavingsAcc savings = this.savings;
+        this.balance = balance.add(amt);
+        savings.subValue(amt);
     }
 
     //EFFECTS: Returns savings balance

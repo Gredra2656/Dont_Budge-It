@@ -17,4 +17,9 @@ public interface HasInterest {
     //MODIFIES: this
     //EFFECTS: Adds payment to the value
     void addValue(BigDecimal payment);
+
+    //REQUIRES: 0 < interest < 1
+    //MODIFIES: this
+    //EFFECTS: Sets the interest to the given value
+    void setInterest(BigDecimal interest);
 }
