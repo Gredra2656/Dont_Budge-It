@@ -7,6 +7,8 @@ public class DebtAcc implements HasInterest {
     String name;
     BigDecimal interest;
 
+    //MODIFIES: this
+    //EFFECTS: Constructs a debt account
     public DebtAcc(String name, BigDecimal value, BigDecimal interest) {
         this.value = value;
         this.name = name;
