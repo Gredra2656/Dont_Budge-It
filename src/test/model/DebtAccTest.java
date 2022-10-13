@@ -47,4 +47,10 @@ public class DebtAccTest {
         testDebt.setInterest(BigDecimal.valueOf(.3));
         assertEquals(BigDecimal.valueOf(.3), testDebt.interest);
     }
+
+    @Test
+    public void testGetName() {
+        String n = testDebt.getName();
+        assertEquals("Credit Card", n);
+    }
 }
