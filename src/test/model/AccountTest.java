@@ -157,7 +157,9 @@ public class AccountTest {
      */
 
     @Test
+
     public void removeNonExistentDebt() {
+        testAcc.addDebt("Credit Card", BigDecimal.valueOf(20000), BigDecimal.valueOf(.2));
         assertFalse(testAcc.removeDebt("WienerSchnitzel"));
     }
 
