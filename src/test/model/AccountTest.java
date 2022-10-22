@@ -140,24 +140,7 @@ public class AccountTest {
         assertTrue(testAcc.removeDebt("Credit Card"));
     }
 
-    /*
     @Test
-    public void payDebt() {
-        testAcc.addBalance(BigDecimal.valueOf(501));
-        testAcc.addDebt("Credit Card", BigDecimal.valueOf(2000), BigDecimal.valueOf(.1));
-        assertTrue(testAcc.payDebt("Credit Card", BigDecimal.valueOf(500)));
-        assertTrue(testAcc.debts.get(0).getValue().equals(BigDecimal.valueOf(1500)));
-        assertEquals(BigDecimal.valueOf(1), testAcc.getBalance());
-    }
-
-    @Test
-    public void payNonExistentDebt() {
-        assertFalse(testAcc.payDebt("Credit Card", BigDecimal.valueOf(50)));
-    }
-     */
-
-    @Test
-
     public void removeNonExistentDebt() {
         testAcc.addDebt("Credit Card", BigDecimal.valueOf(20000), BigDecimal.valueOf(.2));
         assertFalse(testAcc.removeDebt("WienerSchnitzel"));
