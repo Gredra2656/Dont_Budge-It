@@ -1,9 +1,11 @@
 package model;
 
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.math.BigDecimal;
 
 public class Account {
     BigDecimal balance; // Balance in cents
@@ -169,6 +171,11 @@ public class Account {
         savings.subValue(amt);
     }
 
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+    }
+
     //EFFECTS: Returns savings balance
     public BigDecimal getSavingsBal() {
         return this.savings.getBal();
@@ -207,4 +214,6 @@ public class Account {
     public SavingsAcc getSavings() {
         return savings;
     }
+
+
 }

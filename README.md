@@ -38,3 +38,5 @@ able to see the breakdown
 8. As a user, I want to be able to add individual expenses that I want to record for future reference.
 9. As a user, I want to be able to plan long term savings goals with interest.
 10. As a user, I want the values to be stored securely, perhaps accessed by PIN/Pass.
+11. As a user, I want to be able to save my budget so that I can edit it later.
+12. As a user, I want to be able to open my old budget to pick up where I left off.
