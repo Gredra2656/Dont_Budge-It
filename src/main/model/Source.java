@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.math.BigDecimal;
 
 
@@ -20,5 +22,12 @@ public class Source {
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("value", value);
+        return json;
     }
 }

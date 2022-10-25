@@ -1,0 +1,11 @@
+{
+    "debts": [],
+    "receipts": [],
+    "balance": 0,
+    "sources": [],
+    "spg": 0,
+    "savings": {
+        "balance": 0,
+        "interest": 0
+    }
+}

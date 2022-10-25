@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.math.BigDecimal;
 
 public class SavingsAcc implements HasInterest {
@@ -40,8 +42,19 @@ public class SavingsAcc implements HasInterest {
         return interest;
     }
 
+    public void setBal(BigDecimal bal) {
+        this.bal = bal;
+    }
+
     @Override
     public void setInterest(BigDecimal interest) {
         this.interest = interest;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("balance", bal);
+        json.put("interest", interest);
+        return json;
     }
 }

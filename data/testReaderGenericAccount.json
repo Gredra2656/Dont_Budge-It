@@ -1,0 +1,24 @@
+{
+    "debts": [{
+        "interest": 0.07,
+        "name": "Loan",
+        "value": 300000
+    }],
+    "receipts": [{"receipt": "This is a receipt"}],
+    "balance": 5000.55,
+    "sources": [
+        {
+            "name": "Work",
+            "value": 5000
+        },
+        {
+            "name": "Bills",
+            "value": -1394.59
+        }
+    ],
+    "spg": 0.5,
+    "savings": {
+        "balance": 135903.39,
+        "interest": 0.01
+    }
+}
