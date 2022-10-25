@@ -30,6 +30,7 @@ public class BudgeItApp {
         init();
 
         while (running) {
+            input = new Scanner(System.in);
             displayOptions();
             command = input.next();
             command = command.toLowerCase();
@@ -70,13 +71,17 @@ public class BudgeItApp {
         }
     }
 
+    //EFFECTS: Processes the user's file save/load commands
     private void commandLineFile(String command) {
         if (command.equals("save")) {
             save();
         } else if (command.equals("load")) {
             load();
+        } else if (command.equals("b")) {
+            // RETURN TO MAIN MENU
         } else {
             System.out.println("Please enter a valid selection.");
+
         }
     }
 
@@ -99,7 +104,9 @@ public class BudgeItApp {
             addSource();
         } else if (command.equals("rem")) {
             removeSource();
-        } else {
+        } else if (command.equals("b")) {
+            // RETURN TO MAIN MENU
+        }  else {
             System.out.println("Please enter a valid selection.");
         }
     }
@@ -122,7 +129,9 @@ public class BudgeItApp {
             setSavingsGoal();
         } else if (command.equals("i")) {
             setSavingsInterestRate();
-        } else {
+        } else if (command.equals("b")) {
+            // RETURN TO MAIN MENU
+        }  else {
             System.out.println("Please enter a valid selection.");
         }
     }
@@ -139,6 +148,8 @@ public class BudgeItApp {
             addDebt();
         } else if (command.equals("rem")) {
             removeDebt();
+        } else if (command.equals("b")) {
+            // RETURN TO MAIN MENU
         } else {
             System.out.println("Please enter a valid selection.");
         }
@@ -173,10 +184,12 @@ public class BudgeItApp {
         System.out.println("\tq -> quit");
     }
 
+    //EFFECTS: Displays options for modifying your account.
     private void displayFileOptions() {
         System.out.println("\nSelect from:");
         System.out.println("\tsave -> save your file to disk");
         System.out.println("\tload -> load your file from disk");
+        System.out.println("\tb -> return to main menu");
     }
 
     //EFFECTS: Displays options for modifying your account
@@ -188,6 +201,7 @@ public class BudgeItApp {
         System.out.println("\tu -> update your account balance quickly");
         System.out.println("\tadd -> add income or expense to account");
         System.out.println("\trem -> remove income or expense from account");
+        System.out.println("\tb -> return to main menu");
     }
 
     //EFFECTS: Displays the options for modifying your savings account
@@ -197,6 +211,7 @@ public class BudgeItApp {
         System.out.println("\tbal -> show current savings account balance");
         System.out.println("\tg -> set a savings goal for your account");
         System.out.println("\ti -> set an interest rate for your savings");
+        System.out.println("\tb -> return to main menu");
     }
 
     //EFFECTS: Displays the options for modifying your debt
@@ -206,6 +221,7 @@ public class BudgeItApp {
         System.out.println("\ta -> add value to one of your debts");
         System.out.println("\tadd -> add a debt to your account");
         System.out.println("\trem -> remove a debt from your account");
+        System.out.println("\tb -> return to main menu");
     }
 
     //MODIFIES: this
@@ -225,9 +241,13 @@ public class BudgeItApp {
         System.out.println("Please enter the name of the source you'd like to add: ");
         name = input.next();
         System.out.println("Please enter the value of the source you'd like to add: ");
-        val = input.nextBigDecimal();
-
-        userAccount.addSource(name, val);
+        try {
+            input.reset();
+            val = input.nextBigDecimal();
+            userAccount.addSource(name, val);
+        } catch (Exception e) {
+            System.out.println("Please make sure you enter a positive or negative number for value of the source.");
+        }
     }
 
     //MODIFIES: this
@@ -238,7 +258,11 @@ public class BudgeItApp {
         System.out.println("Please enter the name of the source you'd like to remove: ");
         name = input.next();
 
-        userAccount.removeSource(name);
+        if (userAccount.removeSource(name)) {
+            System.out.println("Source removed.");
+        } else {
+            System.out.println("Source name could not be found, please try again.");
+        }
     }
 
     //EFFECTS: Displays this month's budget surplus

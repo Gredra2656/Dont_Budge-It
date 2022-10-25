@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-// TODO: ADD REQ MOD EFF CLAUSE
+
 public class JsonReader {
     private final String source;
 
@@ -41,6 +41,7 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
+    // EFFECTS: parses account from JSONObject and returns it
     private Account parseAccount(JSONObject jsonObject) {
         Account acc = new Account();
         acc.updateBalance(jsonObject.getBigDecimal("balance"));
@@ -52,6 +53,8 @@ public class JsonReader {
         return acc;
     }
 
+    //MODIFIES: acc
+    //EFFECTS: parses sources from JSONObject and adds them to account
     private void addSources(Account acc, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("sources");
         for (Object json : jsonArray) {
@@ -60,12 +63,16 @@ public class JsonReader {
         }
     }
 
+    //MODIFIES: acc
+    //EFFECTS: parses source from JSONObject and adds it to acc
     private void addSource(Account acc, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         BigDecimal val = jsonObject.getBigDecimal("value");
         acc.addSource(name, val);
     }
 
+    //MODIFIES: acc
+    //EFFECTS: parses a SavingsAcc from JSONObject and adds its values to acc
     private void addSavings(Account acc, JSONObject jsonObject) {
         JSONObject savings = jsonObject.getJSONObject("savings");
         BigDecimal balance = savings.getBigDecimal("balance");
@@ -74,6 +81,8 @@ public class JsonReader {
         acc.getSavings().setInterest(interest);
     }
 
+    //MODIFIES: acc
+    //EFFECTS: parses debts from JSONObject and adds them to acc
     private void addDebts(Account acc, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("debts");
         for (Object json : jsonArray) {
@@ -82,6 +91,8 @@ public class JsonReader {
         }
     }
 
+    //MODIFIES: acc
+    //EFFECTS: parses a debt from JSONObject and adds it to acc
     private void addDebt(Account acc, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         BigDecimal value = jsonObject.getBigDecimal("value");
@@ -90,6 +101,8 @@ public class JsonReader {
 
     }
 
+    //MODIFIES: acc
+    //EFFECTS: parses receipts from JSONObject and adds them to acc
     private void addReceipts(Account acc, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("receipts");
         for (Object json : jsonArray) {
