@@ -87,9 +87,13 @@ public class AccountTest {
         BigDecimal spg = testAcc.getSavingsPercentGoal();
         String receipt;
 
-        receipt = "Income: "+ income +
-                "\nExpenses: " + expense + "\n------" + "\nTotal: " + surplus + "\nRecommended Savings: "
-        + testAcc.calculateSurplus().multiply(spg);
+        receipt = "Month: " + testAcc.monthTracker
+                + "\nIncome: " + income
+                + "\nExpenses: " + expense
+                + "\n------" +
+                "\nTotal: " + surplus
+                + "\nRecommended Savings: " + testAcc.calculateSurplus().multiply(spg)
+                + "\n------";
         assertEquals(receipt, testAcc.returnReceipt());
     }
 
@@ -121,8 +125,8 @@ public class AccountTest {
 
         testAcc.computeNextPeriod();
 
-        assertEquals(BigDecimal.valueOf(5000+5000+500-500-360-1), testAcc.getBalance());
-        assertEquals(BigDecimal.valueOf(1000 * 1.2), testAcc.getDebts().get(0).getValue());
+        assertEquals(BigDecimal.valueOf(5000+5000+500-500-360-1).setScale(2), testAcc.getBalance());
+        assertEquals(BigDecimal.valueOf(1000 * 1.2).setScale(2), testAcc.getDebts().get(0).getValue());
         assertEquals(BigDecimal.valueOf(500 * 1.01).stripTrailingZeros(),
                 testAcc.getSavings().getBal().stripTrailingZeros());
         assertEquals(1, testAcc.getReceipts().size());
