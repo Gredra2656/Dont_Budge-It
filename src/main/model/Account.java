@@ -4,11 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Account {
+    int monthTracker;
     BigDecimal balance; // Balance in cents
     BigDecimal savingsPercentGoal; // Savings goal as percentage
     List<Source> sources; // Catalogue of sources
@@ -18,6 +20,7 @@ public class Account {
 
     //EFFECTS: Creates a fresh account with no values.
     public Account() {
+        this.monthTracker = 1;
         this.balance = BigDecimal.valueOf(0);
         this.savingsPercentGoal = BigDecimal.valueOf(0);
         this.sources = new ArrayList<>();
@@ -56,7 +59,7 @@ public class Account {
         for (Source source : sources) {
             s = s.add(source.getValue());
         }
-        return s;
+        return s.setScale(2, RoundingMode.CEILING);
     }
 
     //REQUIRES: that lst is a list of income sources
@@ -97,8 +100,13 @@ public class Account {
         BigDecimal expense = calculateExpenses();
         BigDecimal surplus = calculateSurplus();
 
-        return "Income: " + income + "\nExpenses: " + expense + "\n" + "------" + "\nTotal: " + surplus
-                + "\nRecommended Savings: " + savingsPercentGoal.multiply(calculateSurplus());
+        return "Month: " + monthTracker
+                + "\nIncome: " + income
+                + "\nExpenses: " + expense
+                + "\n" + "------"
+                + "\nTotal: " + surplus
+                + "\nRecommended Savings: " + savingsPercentGoal.multiply(calculateSurplus())
+                + "\n------";
     }
 
     //REQUIRES: val > 0
@@ -124,12 +132,13 @@ public class Account {
     //MODIFIES: this
     //EFFECTS: Updates debt, savings, and balance, records a receipt, and recommends a savings deposit for that month
     public void computeNextPeriod() {
-        this.balance = this.balance.add(calculateSurplus());
+        this.balance = this.balance.add(calculateSurplus()).setScale(2, RoundingMode.CEILING);
         this.savings.calculateInterest();
         for (DebtAcc debts : debts) {
             debts.calculateInterest();
         }
         this.receipts.add(returnReceipt());
+        monthTracker += 1;
         System.out.println("We recommend saving: " + savingsPercentGoal.multiply(calculateSurplus()));
     }
 
@@ -174,6 +183,7 @@ public class Account {
 
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
+        json.put("month", monthTracker);
         json.put("balance", balance);
         json.put("spg", savingsPercentGoal);
         json.put("sources", sourcesToJson());
@@ -228,7 +238,7 @@ public class Account {
     //REQUIRES: That a savings goal has been set
     //EFFECTS: Returns an integer based on your surplus that month and your savings goal
     public BigDecimal suggestSavings(BigDecimal surplus) {
-        return surplus.multiply(this.savingsPercentGoal);
+        return surplus.multiply(this.savingsPercentGoal).setScale(2, RoundingMode.CEILING);
     }
 
     public BigDecimal getBalance() {

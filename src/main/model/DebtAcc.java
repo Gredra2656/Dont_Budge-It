@@ -3,6 +3,7 @@ package model;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class DebtAcc implements HasInterest {
     BigDecimal value;
@@ -20,7 +21,7 @@ public class DebtAcc implements HasInterest {
     //EFFECTS: Calculates addition to debt -- SEE INTERFACE
     @Override
     public void calculateInterest() {
-        this.value = value.multiply(interest.add(BigDecimal.valueOf(1)));
+        this.value = value.multiply(interest.add(BigDecimal.valueOf(1))).setScale(2, RoundingMode.CEILING);
     }
 
     //EFFECTS: Adds value to the debt -- SEE INTERFACE

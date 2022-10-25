@@ -1,6 +1,7 @@
 {
     "debts": [],
     "receipts": [],
+    "month": 1,
     "balance": 0,
     "sources": [],
     "spg": 0,

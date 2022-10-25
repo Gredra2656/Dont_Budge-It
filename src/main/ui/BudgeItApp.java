@@ -5,9 +5,12 @@ package ui;
 
 import model.Account;
 import model.DebtAcc;
+import model.Source;
+import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
@@ -100,6 +103,8 @@ public class BudgeItApp {
             showBalance();
         } else if (command.equals("u")) {
             updateBalance();
+        } else if (command.equals("show")) {
+            showSources();
         } else if (command.equals("add")) {
             addSource();
         } else if (command.equals("rem")) {
@@ -199,6 +204,7 @@ public class BudgeItApp {
         System.out.println("\tw -> withdraw");
         System.out.println("\tbal -> show current account balance");
         System.out.println("\tu -> update your account balance quickly");
+        System.out.println("\tshow -> show all income and expense sources");
         System.out.println("\tadd -> add income or expense to account");
         System.out.println("\trem -> remove income or expense from account");
         System.out.println("\tb -> return to main menu");
@@ -240,6 +246,7 @@ public class BudgeItApp {
 
         System.out.println("Please enter the name of the source you'd like to add: ");
         name = input.next();
+        input.nextLine();
         System.out.println("Please enter the value of the source you'd like to add: ");
         try {
             input.reset();
@@ -299,6 +306,7 @@ public class BudgeItApp {
 
         System.out.println("Please enter the name of the debt: ");
         name = input.next();
+        input.nextLine();
         System.out.println("Please enter the balance for the debt: ");
         val = input.nextBigDecimal();
         System.out.println("Please enter the interest rate for your debt: ");
@@ -324,6 +332,8 @@ public class BudgeItApp {
 
         if (!userAccount.removeDebt(name)) {
             System.out.println("Could not find that debt in your list.");
+        } else {
+            System.out.println("Debt removed.");
         }
     }
 
@@ -414,6 +424,12 @@ public class BudgeItApp {
         System.out.println(userAccount.getBalance());
     }
 
+    private void showSources() {
+        for (Source s : userAccount.getSources()) {
+            System.out.println("Name: " + s.getName() + ", Value: " + s.getValue());
+        }
+    }
+
     //EFFECTS: Prints out the user's current savings balance
     private void showSavings() {
         System.out.println("Here is your current savings balance: ");
@@ -424,7 +440,9 @@ public class BudgeItApp {
     private void showDebts() {
         System.out.println("Here are the debts listed on your account: ");
         for (DebtAcc da : userAccount.getDebts()) {
-            System.out.println(da);
+            System.out.println("Name: " + da.getName()
+                    + "\nValue: " + da.getValue()
+                    + "\nInterest: " + da.getInterest().movePointRight(2) + "%");
         }
     }
 
@@ -435,7 +453,7 @@ public class BudgeItApp {
         userAccount.computeNextPeriod();
     }
 
-    // TODO
+    //EFFECTS: Saves a JSON object with the details of the current account object
     private void save() {
         try {
             System.out.println("File saved to " + saveLocation);
@@ -444,13 +462,20 @@ public class BudgeItApp {
             writer.write(userAccount);
             writer.close();
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("Unable to write to file " + saveLocation);
         }
     }
 
-    // TODO
+    //MODIFIES: this
+    //EFFECTS: Loads the saved JSONObject and updates account to what was saved
     private void load() {
-        // TODO
+        try {
+            System.out.println("File loading from " + saveLocation);
+            JsonReader reader = new JsonReader(saveLocation);
+            userAccount = reader.read();
+        } catch (IOException e) {
+            System.out.println("Unable to read file " + saveLocation);
+        }
     }
 
 
