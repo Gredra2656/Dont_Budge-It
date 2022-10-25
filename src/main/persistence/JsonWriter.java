@@ -1,3 +1,6 @@
+// Credit to JsonSerializationDemo from the CPSC 210 phase 2 example for saving and loading from json files.
+// JsonSerializationDemo - https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+
 package persistence;
 
 import model.Account;
@@ -6,6 +9,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+
 
 public class JsonWriter {
     private static final int TAB = 4;

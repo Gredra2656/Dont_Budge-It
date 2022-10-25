@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
@@ -173,8 +174,51 @@ public class Account {
 
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-
+        json.put("balance", balance);
+        json.put("spg", savingsPercentGoal);
+        json.put("sources", sourcesToJson());
+        json.put("savings", savings.toJson());
+        json.put("debts", debtsToJson());
+        json.put("receipts", receiptsToJson());
+        return json;
     }
+
+    private JSONArray sourcesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Source s : sources) {
+            jsonArray.put(s.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    private JSONArray debtsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (DebtAcc d : debts) {
+            jsonArray.put(d.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    private JSONArray receiptsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (String s : receipts) {
+            jsonArray.put(receiptToJson(s));
+        }
+
+        return jsonArray;
+    }
+
+    private JSONObject receiptToJson(String s) {
+        JSONObject json = new JSONObject();
+        json.put("receipt", s);
+        return json;
+    }
+
 
     //EFFECTS: Returns savings balance
     public BigDecimal getSavingsBal() {

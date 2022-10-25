@@ -5,7 +5,9 @@ package ui;
 
 import model.Account;
 import model.DebtAcc;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
@@ -13,6 +15,7 @@ import java.util.Scanner;
 public class BudgeItApp {
     private Account userAccount;
     private Scanner input;
+    private final String saveLocation = "./data/UserAccount.json";
 
     public BudgeItApp() {
         startBudgeIt();
@@ -32,6 +35,7 @@ public class BudgeItApp {
             command = command.toLowerCase();
 
             if (command.equals("q")) {
+
                 running = false;
             } else {
                 commandLine(command);
@@ -43,16 +47,13 @@ public class BudgeItApp {
     private void commandLine(String command) {
         if (command.equals("a")) {
             displayAccountOptions();
-            command = awaitNextMenuCommand();
-            commandLineAccount(command);
+            commandLineAccount(awaitNextMenuCommand());
         } else if (command.equals("s")) {
             displaySavingsAccountOptions();
-            command = awaitNextMenuCommand();
-            commandLineSavings(command);
+            commandLineSavings(awaitNextMenuCommand());
         } else if (command.equals("d")) {
             displayDebtAccountOptions();
-            command = awaitNextMenuCommand();
-            commandLineDebts(command);
+            commandLineDebts(awaitNextMenuCommand());
         } else if (command.equals("sur")) {
             displaySurplus();
         } else if (command.equals("rec")) {
@@ -61,6 +62,19 @@ public class BudgeItApp {
             displayReceipts();
         } else if (command.equals("end")) {
             endPeriod();
+        } else if (command.equals("file")) {
+            displayFileOptions();
+            commandLineFile(awaitNextMenuCommand());
+        } else {
+            System.out.println("Please enter a valid selection.");
+        }
+    }
+
+    private void commandLineFile(String command) {
+        if (command.equals("save")) {
+            save();
+        } else-if (command.equals("load")) {
+            load();
         } else {
             System.out.println("Please enter a valid selection.");
         }
@@ -155,7 +169,14 @@ public class BudgeItApp {
         System.out.println("\trec -> show this month's receipt");
         System.out.println("\trecs -> show all receipts on your account");
         System.out.println("\tend -> end the current month, and record a receipt to your account");
+        System.out.println("\tfile -> access the options to save and load your file");
         System.out.println("\tq -> quit");
+    }
+
+    private void displayFileOptions() {
+        System.out.println("\nSelect from:");
+        System.out.println("\tsave -> save your file to disk");
+        System.out.println("\tload -> load your file from disk");
     }
 
     //EFFECTS: Displays options for modifying your account
@@ -389,6 +410,25 @@ public class BudgeItApp {
         System.out.println("Ending period...");
         userAccount.computeNextPeriod();
     }
+
+    // TODO
+    private void save() {
+        try {
+            System.out.println("File saved to " + saveLocation);
+            JsonWriter writer = new JsonWriter(saveLocation);
+            writer.open();
+            writer.write(userAccount);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // TODO
+    private void load() {
+        // TODO
+    }
+
 
     //MODIFIES: this
     //EFFECTS: Sets the savings interest rate on your savings account
