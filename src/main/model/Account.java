@@ -269,5 +269,11 @@ public class Account {
         return savings;
     }
 
+    public void setMonthTracker(int monthTracker) {
+        this.monthTracker = monthTracker;
+    }
 
+    public int getMonthTracker() {
+        return monthTracker;
+    }
 }

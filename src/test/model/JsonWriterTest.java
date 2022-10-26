@@ -74,6 +74,7 @@ public class JsonWriterTest extends JsonTest {
 
             JsonReader reader = new JsonReader("./data/testWriterGenericAccount.json");
             acc = reader.read();
+            assertEquals(1, acc.getMonthTracker());
             assertEquals(BigDecimal.valueOf(5000.55), acc.getBalance());
             assertEquals(BigDecimal.valueOf(.5), acc.getSavingsPercentGoal());
             assertEquals(2, acc.getSources().size());

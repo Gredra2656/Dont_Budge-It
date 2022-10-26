@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,13 +49,13 @@ public class AccountTest {
 
     @Test
     public void testCalculateSurplus() {
-        assertEquals(BigDecimal.valueOf(5000+500-1-360), testAcc.calculateSurplus());
+        assertEquals(BigDecimal.valueOf(5000+500-1-360).setScale(2, RoundingMode.CEILING), testAcc.calculateSurplus());
     }
 
     @Test
     public void testCalculateSurplusNeg() {
         testAcc.addSource("Temp Bill", BigDecimal.valueOf(-6000));
-        assertEquals(BigDecimal.valueOf(5000+500-1-360-6000), testAcc.calculateSurplus());
+        assertEquals(BigDecimal.valueOf(5000+500-1-360-6000).setScale(2, RoundingMode.CEILING), testAcc.calculateSurplus());
     }
 
     @Test
@@ -125,8 +126,8 @@ public class AccountTest {
 
         testAcc.computeNextPeriod();
 
-        assertEquals(BigDecimal.valueOf(5000+5000+500-500-360-1).setScale(2), testAcc.getBalance());
-        assertEquals(BigDecimal.valueOf(1000 * 1.2).setScale(2), testAcc.getDebts().get(0).getValue());
+        assertEquals(BigDecimal.valueOf(5000+5000+500-500-360-1).setScale(2, RoundingMode.CEILING), testAcc.getBalance());
+        assertEquals(BigDecimal.valueOf(1000 * 1.2).setScale(2, RoundingMode.CEILING), testAcc.getDebts().get(0).getValue());
         assertEquals(BigDecimal.valueOf(500 * 1.01).stripTrailingZeros(),
                 testAcc.getSavings().getBal().stripTrailingZeros());
         assertEquals(1, testAcc.getReceipts().size());
@@ -169,7 +170,9 @@ public class AccountTest {
     @Test
     public void testSuggestSavings() {
         testAcc.setSavingsPercentGoal(BigDecimal.valueOf(.5));
-        assertEquals(testAcc.getSavingsPercentGoal().multiply(testAcc.calculateSurplus()),
+        assertEquals(
+                testAcc.getSavingsPercentGoal().multiply(testAcc.calculateSurplus())
+                        .setScale(2, RoundingMode.CEILING),
                 testAcc.suggestSavings(testAcc.calculateSurplus()));
     }
 }

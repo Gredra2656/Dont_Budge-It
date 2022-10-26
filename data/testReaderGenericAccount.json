@@ -6,6 +6,7 @@
     }],
     "receipts": [{"receipt": "This is a receipt"}],
     "balance": 5000.55,
+    "month": 2,
     "sources": [
         {
             "name": "Work",

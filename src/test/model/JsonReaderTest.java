@@ -32,6 +32,7 @@ public class JsonReaderTest extends JsonTest {
         JsonReader reader = new JsonReader("./data/testReaderEmptyAccount.json");
         try {
             acc = reader.read();
+            assertEquals(1, acc.getMonthTracker());
             assertEquals(BigDecimal.ZERO, acc.getBalance());
             assertEquals(BigDecimal.ZERO, acc.getSavingsPercentGoal());
             assertEquals(0, acc.getSources().size());
@@ -48,6 +49,7 @@ public class JsonReaderTest extends JsonTest {
         JsonReader reader = new JsonReader("./data/testReaderGenericAccount.json");
         try {
             acc = reader.read();
+            assertEquals(2, acc.getMonthTracker());
             assertEquals(BigDecimal.valueOf(5000.55), acc.getBalance());
             assertEquals(BigDecimal.valueOf(.5), acc.getSavingsPercentGoal());
             assertEquals(2, acc.getSources().size());

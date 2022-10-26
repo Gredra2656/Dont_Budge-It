@@ -44,6 +44,7 @@ public class JsonReader {
     // EFFECTS: parses account from JSONObject and returns it
     private Account parseAccount(JSONObject jsonObject) {
         Account acc = new Account();
+        acc.setMonthTracker(jsonObject.getInt("month"));
         acc.updateBalance(jsonObject.getBigDecimal("balance"));
         acc.setSavingsPercentGoal(jsonObject.getBigDecimal("spg"));
         addSources(acc, jsonObject);

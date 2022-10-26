@@ -82,6 +82,10 @@ public class BudgeItApp {
             load();
         } else if (command.equals("b")) {
             // RETURN TO MAIN MENU
+        } else if (command.equals("cr")) {
+            clearReceipts();
+        } else if (command.equals("reset")) {
+            resetAccount();
         } else {
             System.out.println("Please enter a valid selection.");
 
@@ -111,7 +115,7 @@ public class BudgeItApp {
             removeSource();
         } else if (command.equals("b")) {
             // RETURN TO MAIN MENU
-        }  else {
+        } else {
             System.out.println("Please enter a valid selection.");
         }
     }
@@ -136,7 +140,7 @@ public class BudgeItApp {
             setSavingsInterestRate();
         } else if (command.equals("b")) {
             // RETURN TO MAIN MENU
-        }  else {
+        } else {
             System.out.println("Please enter a valid selection.");
         }
     }
@@ -194,6 +198,8 @@ public class BudgeItApp {
         System.out.println("\nSelect from:");
         System.out.println("\tsave -> save your file to disk");
         System.out.println("\tload -> load your file from disk");
+        System.out.println("\tcr -> clear receipts from your account");
+        System.out.println("\treset -> create a new account");
         System.out.println("\tb -> return to main menu");
     }
 
@@ -363,7 +369,7 @@ public class BudgeItApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: Adds amt to one of userAcount's debts
+    //EFFECTS: Adds amt to one of userAccount's debts
     private void addToDebt() {
         String name;
         BigDecimal amt;
@@ -494,6 +500,17 @@ public class BudgeItApp {
         } else {
             userAccount.getSavings().setInterest(interest);
         }
+    }
 
+    //MODIFIES: this
+    //EFFECTS: clears all receipts from the user's account
+    private void clearReceipts() {
+        userAccount.getReceipts().clear();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Creates a brand-new account. NOTE: WILL NOT SAVE TO FILE, MUST MANUALLY SAVE.
+    private void resetAccount() {
+        // TODO
     }
 }
