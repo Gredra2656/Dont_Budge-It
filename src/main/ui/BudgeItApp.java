@@ -198,7 +198,7 @@ public class BudgeItApp {
         System.out.println("\nSelect from:");
         System.out.println("\tsave -> save your file to disk");
         System.out.println("\tload -> load your file from disk");
-        System.out.println("\tcr -> clear receipts from your account");
+        System.out.println("\tcr -> clear receipts from your account, and reset the month tracker");
         System.out.println("\treset -> create a new account");
         System.out.println("\tb -> return to main menu");
     }
@@ -361,11 +361,13 @@ public class BudgeItApp {
                 } else {
                     d.subValue(amt);
                     userAccount.withdrawBalance(amt);
+                    System.out.println("Balance remaining: " + d.getValue());
                 }
             } else {
                 System.out.println("We could not find that debt in your list!");
             }
         }
+
     }
 
     //MODIFIES: this
@@ -415,8 +417,12 @@ public class BudgeItApp {
 
     //EFFECTS: Displays all receipts attached to the user account
     private void displayReceipts() {
-        for (String r : userAccount.getReceipts()) {
-            System.out.println(r);
+        if (userAccount.getReceipts().isEmpty()) {
+            System.out.println("There are no receipts recorded for this account.");
+        } else {
+            for (String r : userAccount.getReceipts()) {
+                System.out.println(r);
+            }
         }
     }
 
@@ -503,14 +509,15 @@ public class BudgeItApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: clears all receipts from the user's account
+    //EFFECTS: clears all receipts from the user's account, and resets the month tracker
     private void clearReceipts() {
         userAccount.getReceipts().clear();
+        userAccount.setMonthTracker(1);
     }
 
     //MODIFIES: this
     //EFFECTS: Creates a brand-new account. NOTE: WILL NOT SAVE TO FILE, MUST MANUALLY SAVE.
     private void resetAccount() {
-        // TODO
+        userAccount = new Account();
     }
 }
