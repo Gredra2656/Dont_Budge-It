@@ -37,6 +37,15 @@ public class DebtAcc implements HasInterest {
         return this.value.equals(BigDecimal.valueOf(0));
     }
 
+    //EFFECTS: Parses a DebtAcc object to a JSONObject
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("value", value);
+        json.put("interest", interest);
+        return json;
+    }
+
     @Override
     public void setInterest(BigDecimal interest) {
         this.interest = interest;
@@ -52,13 +61,5 @@ public class DebtAcc implements HasInterest {
 
     public BigDecimal getInterest() {
         return this.interest;
-    }
-
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        json.put("name", name);
-        json.put("value", value);
-        json.put("interest", interest);
-        return json;
     }
 }

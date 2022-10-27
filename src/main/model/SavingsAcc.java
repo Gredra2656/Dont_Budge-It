@@ -52,6 +52,7 @@ public class SavingsAcc implements HasInterest {
         this.interest = interest;
     }
 
+    //EFFECTS: Parses a SavingsAcc to a JSONObject
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("balance", bal);

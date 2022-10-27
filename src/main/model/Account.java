@@ -181,6 +181,7 @@ public class Account {
         savings.subValue(amt);
     }
 
+    //EFFECTS: Creates a JSONObject representing an account to be written to a save file
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("month", monthTracker);
@@ -193,6 +194,7 @@ public class Account {
         return json;
     }
 
+    //EFFECTS: Parses the account's list of sources to a JSONArray to be added to a JSONObject
     private JSONArray sourcesToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -203,6 +205,7 @@ public class Account {
         return jsonArray;
     }
 
+    //EFFECTS: Parses the account's list of debts to a JSONArray to be added to a JSONObject
     private JSONArray debtsToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -213,6 +216,7 @@ public class Account {
         return jsonArray;
     }
 
+    //EFFECTS: Parses the account's list of receipts to a JSONArray to be added to a JSONObject
     private JSONArray receiptsToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -223,6 +227,7 @@ public class Account {
         return jsonArray;
     }
 
+    //EFFECTS: Parses a receipt to a JSONObject
     private JSONObject receiptToJson(String s) {
         JSONObject json = new JSONObject();
         json.put("receipt", s);

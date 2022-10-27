@@ -16,18 +16,19 @@ public class Source {
         this.value = val;
     }
 
+    //EFFECTS: Parses a source to a JSONObject
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("value", value);
+        return json;
+    }
+
     public String getName() {
         return name;
     }
 
     public BigDecimal getValue() {
         return value;
-    }
-
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        json.put("name", name);
-        json.put("value", value);
-        return json;
     }
 }
