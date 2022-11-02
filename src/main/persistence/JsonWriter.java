@@ -6,15 +6,16 @@ package persistence;
 import model.Account;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-
+/**
+ * Defines an object used to write a JSONObject to a file
+ */
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
-    private String destination;
+    private final String destination;
 
     // EFFECTS: Creates a writer object to write to a destination file
     public JsonWriter(String destination) {
@@ -24,7 +25,7 @@ public class JsonWriter {
     // MODIFIES: this
     // EFFECTS: opens a writer for the file, throws FileNotFound if the destination file cannot be written to.
     public void open() throws FileNotFoundException {
-        writer = new PrintWriter(new File(destination));
+        writer = new PrintWriter(destination);
     }
 
     // MODIFIES: this

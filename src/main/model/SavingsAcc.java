@@ -1,11 +1,15 @@
 package model;
 
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class SavingsAcc implements HasInterest {
+/**
+ * A representation of the user's savings account, with balance and interest accumulated per month.
+ */
+public class SavingsAcc implements HasInterest, Writable {
     BigDecimal bal;
     BigDecimal interest;
 

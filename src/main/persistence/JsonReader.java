@@ -14,7 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-
+/**
+ * Defines an object used to read data from JSONObjects
+ */
 public class JsonReader {
     private final String source;
 

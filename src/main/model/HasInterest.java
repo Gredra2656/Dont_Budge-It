@@ -2,6 +2,9 @@ package model;
 
 import java.math.BigDecimal;
 
+/**
+ * An interface representation used for classes that handle an interest on an account balance.
+ */
 public interface HasInterest {
 
     //REQUIRES: payment > 0, payment < value (value of HasInterest)

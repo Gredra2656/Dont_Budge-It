@@ -8,6 +8,9 @@ import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests the model.Account class for functionality
+ */
 public class AccountTest {
     Account testAcc;
 

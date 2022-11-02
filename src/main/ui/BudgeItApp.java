@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Represents the main UI processing for the BudgeItApp, initializing the user's account.
+ */
 public class BudgeItApp {
     private Account userAccount;
     private Scanner input;

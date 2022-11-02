@@ -1,11 +1,19 @@
 package model;
 
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class DebtAcc implements HasInterest {
+/**
+ * Represents a debt account that stores:
+ *      - a debt value,
+ *      - name,
+ *      - and interest rate.
+ */
+
+public class DebtAcc implements HasInterest, Writable {
     BigDecimal value;
     String name;
     BigDecimal interest;

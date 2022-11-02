@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests the model.SavingsAcc class for functionality
+ */
 public class SavingsAccTest {
     SavingsAcc testSave;
 

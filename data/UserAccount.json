@@ -1,37 +1,12 @@
 {
-    "debts": [{
-        "interest": 0.08,
-        "name": "Loan",
-        "value": 12116.55
-    }],
-    "receipts": [
-        {"receipt": "Month: 1\nIncome: 3350\nExpenses: -2053.67\n------\nTotal: 1296.33\nRecommended Savings: 648.1650\n------"},
-        {"receipt": "Month: 2\nIncome: 3350\nExpenses: -2053.67\n------\nTotal: 1296.33\nRecommended Savings: 648.1650\n------"},
-        {"receipt": "Month: 1\nIncome: 3350\nExpenses: -2053.67\n------\nTotal: 1296.33\nRecommended Savings: 648.165\n------"}
-    ],
-    "month": 2,
-    "balance": 2938.99,
-    "sources": [
-        {
-            "name": "Work",
-            "value": 3000
-        },
-        {
-            "name": "Lawn",
-            "value": 350
-        },
-        {
-            "name": "Bills",
-            "value": -850.31
-        },
-        {
-            "name": "Rent",
-            "value": -1203.36
-        }
-    ],
-    "spg": 0.5,
+    "debts": [],
+    "receipts": [],
+    "month": 1,
+    "balance": 0,
+    "sources": [],
+    "spg": 0,
     "savings": {
-        "balance": 4018.03,
-        "interest": 0.0015
+        "balance": 0,
+        "interest": 0
     }
 }

@@ -1,10 +1,10 @@
 // Credit to JsonSerializationDemo from the CPSC 210 phase 2 example for saving and loading from json files.
 // JsonSerializationDemo - https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
 
-package model;
+package persistence;
 
+import model.Account;
 import org.junit.jupiter.api.Test;
-import persistence.JsonReader;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * Tests the persistence.JsonReader class for functionality
+ */
 public class JsonReaderTest extends JsonTest {
 
     Account acc;

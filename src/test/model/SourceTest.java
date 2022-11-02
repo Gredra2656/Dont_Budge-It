@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests the model.Source class for functionality
+ */
 public class SourceTest {
     Source testSource;
 

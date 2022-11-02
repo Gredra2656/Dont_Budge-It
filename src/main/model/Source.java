@@ -1,11 +1,14 @@
 package model;
 
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.math.BigDecimal;
 
-
-public class Source {
+/**
+ * Represents an income/expense source attached to the user's account.
+ */
+public class Source implements Writable {
     String name;
     BigDecimal value;
 

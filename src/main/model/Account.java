@@ -2,6 +2,7 @@ package model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,7 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Account {
+ /**
+ *  Represents a budgeting account to store user accounting information:
+  *     - Balance
+  *     - Savings Percent Goal
+  *     - List of income/expense sources
+  *     - User's savings account
+  *     - User's list of debt accounts
+  *     - And the user's account receipts from previous months
+ */
+public class Account implements Writable {
     int monthTracker;
     BigDecimal balance; // Balance in cents
     BigDecimal savingsPercentGoal; // Savings goal as percentage

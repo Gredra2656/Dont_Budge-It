@@ -1,12 +1,11 @@
 // Credit to JsonSerializationDemo from the CPSC 210 phase 2 example for saving and loading from json files.
 // JsonSerializationDemo - https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
 
-package model;
+package persistence;
 
+import model.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import persistence.JsonReader;
-import persistence.JsonWriter;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -14,6 +13,9 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * Tests the persistence.JsonWriter class for functionality
+ */
 public class JsonWriterTest extends JsonTest {
 
     private Account acc;
@@ -62,10 +64,10 @@ public class JsonWriterTest extends JsonTest {
             acc.setSavingsPercentGoal(BigDecimal.valueOf(.5));
             acc.addSource("Work", BigDecimal.valueOf(5000));
             acc.addSource("Bills", BigDecimal.valueOf(-1394.59));
-            acc.savings.addValue(BigDecimal.valueOf(135903.39));
+            acc.getSavings().addValue(BigDecimal.valueOf(135903.39));
             acc.getSavings().setInterest(BigDecimal.valueOf(.01));
             acc.addDebt("Loan", BigDecimal.valueOf(300000), BigDecimal.valueOf(.07));
-            acc.receipts.add("This is a receipt");
+            acc.getReceipts().add("This is a receipt");
 
             JsonWriter writer = new JsonWriter("./data/testWriterGenericAccount.json");
             writer.open();
