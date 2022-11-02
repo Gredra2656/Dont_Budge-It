@@ -1,7 +1,7 @@
 // Credit to TellerApp from the CPSC 210 phase 1 example for the command line application development.
 // TellerApp -- https://github.students.cs.ubc.ca/CPSC210/TellerApp.git
 
-package ui;
+package ui.textconsole;
 
 import model.Account;
 import model.DebtAcc;

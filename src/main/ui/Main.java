@@ -1,7 +1,9 @@
 package ui;
 
+import ui.textconsole.BudgeItApp;
+
 /**
- * Calls BudgeItApp.java to run the program
+ * Creates a BudgeItApp object to run the program in a console ui
  */
 public class Main {
     public static void main(String[] args) {
