@@ -3,7 +3,16 @@
     "receipts": [],
     "month": 1,
     "balance": 0,
-    "sources": [],
+    "sources": [
+        {
+            "name": "Job",
+            "value": 5000
+        },
+        {
+            "name": "Bills",
+            "value": -3000
+        }
+    ],
     "spg": 0,
     "savings": {
         "balance": 0,

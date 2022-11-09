@@ -4,6 +4,12 @@
 package ui;
 
 import model.Account;
+import model.Source;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -17,6 +23,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.util.List;
+
+import static org.jfree.data.general.DatasetUtils.findMaximumStackedRangeValue;
+import static org.jfree.data.general.DatasetUtils.findMinimumStackedRangeValue;
 
 /**
  * Represents applications main UI window frame.
@@ -31,7 +41,7 @@ public class BudgeItUI extends JFrame {
 
     private Account userAccount;
     private JDesktopPane desktop;
-    private JInternalFrame graph;
+    private ChartPanel graph;
     private JInternalFrame sources;
     private JInternalFrame debts;
     private JInternalFrame account;
@@ -39,6 +49,7 @@ public class BudgeItUI extends JFrame {
 
     private JMenuBar menuBar;
     private JMenu fileMenu;
+    private JMenu chartMenu;
     private JMenu quickEditMenu;
     private JMenu sourceEdit;
     private JMenu debtEdit;
@@ -62,12 +73,11 @@ public class BudgeItUI extends JFrame {
         setTitle("Don't Budge-It!");
         setSize(WIDTH, HEIGHT);
 
-        setSoutRedirect();
+        // setSoutRedirect();
+        addGraph();
         addMenu();
 
-        graph.pack();
         graph.setVisible(true);
-        desktop.add(graph);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         centreOnScreen();
@@ -81,6 +91,58 @@ public class BudgeItUI extends JFrame {
         System.setOut(log);
     }
 
+    private void addGraph() {
+        CategoryDataset sourceDataset = createSurplusDataSet();
+
+        JFreeChart inOutGraph = ChartFactory.createStackedBarChart("Income/Expense Graph", "Value ($)",
+                "Sources", sourceDataset);
+
+        LegendTitle legend = inOutGraph.getLegend();
+
+
+        graph = new ChartPanel(inOutGraph);
+        graph.setLayout(desktopLayout);
+        graph.setPreferredSize(new Dimension(WIDTH / 2, HEIGHT - 200));
+        graph.setSize(graph.getPreferredSize());
+
+        desktop.add(graph);
+    }
+
+    //EFFECTS: Creates a CategoryDataset of the userAccount's income and expense sources.
+    private CategoryDataset createSurplusDataSet() {
+        final String incomeColumn = "Income";
+        final String expenseColumn = "Expense";
+
+        List<Source> sources = userAccount.getSources();
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        for (Source s : sources) {
+            BigDecimal val = s.getValue();
+            String nameKey = s.getName();
+            if (val.compareTo(BigDecimal.ZERO) > -1) {
+                dataset.addValue(val, nameKey, incomeColumn);
+            } else {
+                dataset.addValue(val, nameKey, expenseColumn);
+            }
+        }
+
+        if (dataset.getColumnCount() != 0) {
+            createSurplusCategory(dataset);
+        }
+
+        return dataset;
+    }
+
+    private void createSurplusCategory(DefaultCategoryDataset dataset) {
+        Number totalIncomeNum = findMaximumStackedRangeValue(dataset);
+        Number totalExpenseNum = findMinimumStackedRangeValue(dataset);
+
+        BigDecimal totalIncome = new BigDecimal(totalIncomeNum.toString());
+        BigDecimal totalExpense = new BigDecimal(totalExpenseNum.toString());
+        BigDecimal totalSurplus = totalIncome.add(totalExpense);
+        dataset.addValue(totalSurplus, "Surplus", "Surplus");
+    }
+
     private void addMenu() {
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
@@ -88,11 +150,18 @@ public class BudgeItUI extends JFrame {
 
         quickEditMenu = new JMenu("QuickEdit");
         quickEditMenu.setMnemonic('Q');
+
         sourceEdit = new JMenu("Source");
         debtEdit = new JMenu("Debt");
 
+        chartMenu = new JMenu("Chart");
+
         addInternalMenu();
         addMenuFunctions();
+
+        menuBar.add(fileMenu);
+        menuBar.add(quickEditMenu);
+        menuBar.add(chartMenu);
 
         setJMenuBar(menuBar);
     }
@@ -106,6 +175,9 @@ public class BudgeItUI extends JFrame {
         addMenuItem(quickEditMenu, new SetSavingsPercentGoalAction(),
                 KeyStroke.getKeyStroke("control G"), "P");
 
+        addMenuItem(chartMenu, new RefreshGraphAction(),
+                KeyStroke.getKeyStroke("control R"), "R");
+
         addMenuItem(sourceEdit, new SourceAddAction());
         addMenuItem(sourceEdit, new SourceRemoveAction());
         addMenuItem(debtEdit, new DebtAddAction());
@@ -117,9 +189,6 @@ public class BudgeItUI extends JFrame {
         quickEditMenu.add(debtEdit);
         sourceEdit.setMnemonic('S');
         debtEdit.setMnemonic('D');
-
-        menuBar.add(fileMenu);
-        menuBar.add(quickEditMenu);
     }
 
     private void addMenuItem(JMenu theMenu, AbstractAction action) {
@@ -151,8 +220,6 @@ public class BudgeItUI extends JFrame {
     }
 
     private void createInternalFrames() {
-        graph = new JInternalFrame();
-        graph.setLayout(desktopLayout);
         sources = new JInternalFrame();
         sources.setLayout(desktopLayout);
         debts = new JInternalFrame();
@@ -203,6 +270,7 @@ public class BudgeItUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             load();
+            addGraph();
         }
 
         //MODIFIES: this
@@ -236,7 +304,7 @@ public class BudgeItUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             BigDecimal spg = null;
 
-            String spgString = JOptionPane.showInputDialog(null,
+            String spgString = JOptionPane.showInputDialog(desktop,
                     "What would you like to set your savings goal to? (0%-100%)",
                     "Enter goal: ",
                     JOptionPane.QUESTION_MESSAGE);
@@ -280,7 +348,15 @@ public class BudgeItUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // TODO
+            String nameString = JOptionPane.showInputDialog(desktop,
+                    "What would you like to set as the name of this source?",
+                    "Enter name: ",
+                    JOptionPane.QUESTION_MESSAGE);
+            String valString = JOptionPane.showInputDialog(desktop,
+                    "What is the monthly balance this source adds/subtracts in your account?",
+                    "Enter value: ");
+
+            userAccount.addSource(nameString, new BigDecimal(valString));
         }
     }
 
@@ -321,5 +397,17 @@ public class BudgeItUI extends JFrame {
 
     public static void main(String[] args) {
         new BudgeItUI();
+
+    }
+
+    private class RefreshGraphAction extends AbstractAction {
+        RefreshGraphAction() {
+            super("Refresh");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addGraph();
+        }
     }
 }
