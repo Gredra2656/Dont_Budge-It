@@ -122,7 +122,7 @@ public class Account implements Writable {
     //REQUIRES: val > 0
     //MODIFIES: this
     //EFFECTS: Adds val to balance
-    public void addBalance(BigDecimal val) {
+    public void depositBalance(BigDecimal val) {
         this.balance = this.balance.add(val);
     }
 
@@ -152,7 +152,7 @@ public class Account implements Writable {
         System.out.println("We recommend saving: " + savingsPercentGoal.multiply(calculateSurplus()));
     }
 
-    //REQUIRES: amt > 0
+    //REQUIRES: amt > 0, 0 < interest < 1
     //MODIFIES: this
     //EFFECTS: Adds a debt to the list of debts in the account
     public void addDebt(String name, BigDecimal amt, BigDecimal interest) {

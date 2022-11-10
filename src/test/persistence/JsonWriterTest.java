@@ -60,7 +60,7 @@ public class JsonWriterTest extends JsonTest {
     @Test
     public void testWriterGenericAccount() {
         try {
-            acc.addBalance(BigDecimal.valueOf(5000.55));
+            acc.depositBalance(BigDecimal.valueOf(5000.55));
             acc.setSavingsPercentGoal(BigDecimal.valueOf(.5));
             acc.addSource("Work", BigDecimal.valueOf(5000));
             acc.addSource("Bills", BigDecimal.valueOf(-1394.59));

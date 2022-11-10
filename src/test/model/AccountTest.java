@@ -103,13 +103,13 @@ public class AccountTest {
 
     @Test
     public void testAddBalance() {
-        testAcc.addBalance(BigDecimal.valueOf(500));
+        testAcc.depositBalance(BigDecimal.valueOf(500));
         assertEquals(BigDecimal.valueOf(500), testAcc.getBalance());
     }
 
     @Test
     public void testWithdrawBalance() {
-        testAcc.addBalance(BigDecimal.valueOf(1000));
+        testAcc.depositBalance(BigDecimal.valueOf(1000));
         testAcc.withdrawBalance(BigDecimal.valueOf(500));
         assertEquals(BigDecimal.valueOf(500), testAcc.getBalance());
     }
@@ -122,7 +122,7 @@ public class AccountTest {
 
     @Test
     public void testComputeNextPeriod() {
-        testAcc.addBalance(BigDecimal.valueOf(5000));
+        testAcc.depositBalance(BigDecimal.valueOf(5000));
         testAcc.addDebt("Credit Card", BigDecimal.valueOf(1000), BigDecimal.valueOf(.2));
         testAcc.getSavings().setInterest(BigDecimal.valueOf(.01));
         testAcc.depositSavings(BigDecimal.valueOf(500));

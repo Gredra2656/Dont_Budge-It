@@ -101,7 +101,7 @@ public class BudgeItApp {
         if (command.equals("d")) {
             System.out.println("Please enter the amount you'd like to deposit to your account balance: ");
             val = input.nextBigDecimal();
-            userAccount.addBalance(val);
+            userAccount.depositBalance(val);
         } else if (command.equals("w")) {
             System.out.println("Please enter the amount you'd like to withdraw from your account balance: ");
             val = input.nextBigDecimal();

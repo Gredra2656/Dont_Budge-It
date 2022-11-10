@@ -1,15 +1,19 @@
 {
-    "debts": [],
+    "debts": [{
+        "interest": 0.39,
+        "name": "Debted",
+        "value": 30000
+    }],
     "receipts": [],
     "month": 1,
     "balance": 0,
     "sources": [
         {
-            "name": "Job",
-            "value": 5000
+            "name": "Jeff",
+            "value": 300
         },
         {
-            "name": "Bills",
+            "name": "Free Bird",
             "value": -3000
         }
     ],
