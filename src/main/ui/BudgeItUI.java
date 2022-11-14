@@ -5,6 +5,8 @@ package ui;
 
 import model.Account;
 import model.DebtAcc;
+import model.Event;
+import model.EventLog;
 import model.Source;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -19,10 +21,7 @@ import persistence.JsonWriter;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -82,10 +81,26 @@ public class BudgeItUI extends JFrame {
         addMenu();
         addVisuals(desktopMain);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setCloseFunctions();
         centreOnScreen();
         setVisible(true);
         pack();
+    }
+
+    //EFFECTS: Prints the log of all actions taken to the console on close
+    private void setCloseFunctions() {
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                for (Event event : EventLog.getInstance()) {
+                    System.out.println(event);
+                }
+                EventLog.getInstance().clear();
+                System.exit(0);
+            }
+        };
+        this.addWindowListener(exitListener);
     }
 
     //MODIFIES: this
