@@ -20,23 +20,28 @@ public class SavingsAcc implements HasInterest, Writable {
         this.interest = interest;
     }
 
-    //EFFECTS: Withdraws from savings -- SEE INTERFACE
-    @Override
-    public boolean subValue(BigDecimal payment) {
-        bal = bal.subtract(payment);
-        return bal.equals(BigDecimal.valueOf(0));
-    }
-
     //EFFECTS: Calculates interest on your savings -- SEE INTERFACE
     @Override
     public void calculateInterest() {
-        bal = bal.multiply(interest.add(BigDecimal.valueOf(1))).setScale(2, RoundingMode.CEILING);
+        BigDecimal newBal = bal.multiply(interest.add(BigDecimal.valueOf(1))).setScale(2, RoundingMode.CEILING);
+        EventLog.getInstance().logEvent(new Event("Calculated interest added to savings: "
+                + newBal.subtract(bal)));
+        bal = newBal;
     }
 
     //EFFECTS: Deposits payment to savings -- SEE INTERFACE
     @Override
     public void addValue(BigDecimal payment) {
+        EventLog.getInstance().logEvent(new Event(payment + " deposited to savings account"));
         bal = bal.add(payment);
+    }
+
+    //EFFECTS: Withdraws from savings -- SEE INTERFACE
+    @Override
+    public boolean subValue(BigDecimal payment) {
+        EventLog.getInstance().logEvent(new Event(payment + " withdrawn from savings account"));
+        bal = bal.subtract(payment);
+        return bal.equals(BigDecimal.valueOf(0));
     }
 
     public BigDecimal getBal() {

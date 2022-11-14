@@ -44,19 +44,23 @@ public class Account implements Writable {
     public void addSource(String name, BigDecimal val) {
         Source s = new Source(name, val);
         this.sources.add(s);
+        EventLog.getInstance().logEvent(new Event("Source added with name: " + name
+                + ", and modify balance: " + val));
     }
 
     //MODIFIES: this
     //EFFECTS: Removes the specified source from the source list, if not found return false, else true
-    public boolean removeSource(String sourceName) {
+    public boolean removeSource(String name) {
         List<Source> sources = this.getSources();
         for (int i = 0; i < this.sources.size(); i++) {
             Source s = sources.get(i);
-            if (Objects.equals(s.name, sourceName)) {
+            if (Objects.equals(s.name, name)) {
                 sources.remove(i);
+                EventLog.getInstance().logEvent(new Event("Source removed with name: " + name));
                 return true;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Failed to find and remove source with name: " + name));
         return false;
     }
 
@@ -69,6 +73,7 @@ public class Account implements Writable {
         for (Source source : sources) {
             s = s.add(source.getValue());
         }
+        EventLog.getInstance().logEvent(new Event("Calculating surplus for period..."));
         return s.setScale(2, RoundingMode.CEILING);
     }
 
@@ -84,6 +89,7 @@ public class Account implements Writable {
                 income = income.add(source.getValue());
             }
         }
+        EventLog.getInstance().logEvent(new Event("Calculating sources income total..."));
         return income;
     }
 
@@ -100,6 +106,7 @@ public class Account implements Writable {
             }
         }
         expenses = expenses.multiply(BigDecimal.valueOf(-1));
+        EventLog.getInstance().logEvent(new Event("Calculating sources expense total..."));
         return expenses;
     }
 
@@ -109,6 +116,8 @@ public class Account implements Writable {
         BigDecimal income = calculateIncome();
         BigDecimal expense = calculateExpenses();
         BigDecimal surplus = calculateSurplus();
+
+        EventLog.getInstance().logEvent(new Event("Creating receipt..."));
 
         return "Month: " + monthTracker
                 + "\nIncome: " + income
@@ -123,6 +132,7 @@ public class Account implements Writable {
     //MODIFIES: this
     //EFFECTS: Adds val to balance
     public void depositBalance(BigDecimal val) {
+        EventLog.getInstance().logEvent(new Event(val + " added to account balance"));
         this.balance = this.balance.add(val);
     }
 
@@ -130,12 +140,14 @@ public class Account implements Writable {
     //MODIFIES: this
     //EFFECTS: Subtracts val from balance
     public void withdrawBalance(BigDecimal val) {
+        EventLog.getInstance().logEvent(new Event(val + " withdrawn from account balance"));
         this.balance = this.balance.subtract(val);
     }
 
     //MODIFIES: this
     //EFFECTS: Updates balance to val
     public void updateBalance(BigDecimal val) {
+        EventLog.getInstance().logEvent(new Event("Balance updated to: " + val));
         this.balance = val;
     }
 
@@ -150,6 +162,7 @@ public class Account implements Writable {
         this.receipts.add(returnReceipt());
         monthTracker += 1;
         System.out.println("We recommend saving: " + savingsPercentGoal.multiply(calculateSurplus()));
+        EventLog.getInstance().logEvent(new Event("Ending current period, calculating next..."));
     }
 
     //REQUIRES: amt > 0, 0 < interest < 1
@@ -158,6 +171,8 @@ public class Account implements Writable {
     public void addDebt(String name, BigDecimal amt, BigDecimal interest) {
         DebtAcc debt = new DebtAcc(name, amt, interest);
         this.debts.add(debt);
+        EventLog.getInstance().logEvent(new Event("Adding a debt account with name: " + name
+                + ", balance: " + amt + ", and interest: " + interest));
     }
 
     //MODIFIES: this
@@ -167,9 +182,12 @@ public class Account implements Writable {
             DebtAcc d = debts.get(i);
             if (d.name.equals(name)) {
                 debts.remove(i);
+                EventLog.getInstance().logEvent(new Event("Removing a debt account with name: " + name));
                 return true;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Failed to find and remove debt account with name: "
+                + name));
         return false;
     }
 
@@ -180,6 +198,7 @@ public class Account implements Writable {
         SavingsAcc savings = this.savings;
         this.balance = balance.subtract(amt);
         savings.addValue(amt);
+        EventLog.getInstance().logEvent(new Event("Deposited " + amt + " to savings account"));
     }
 
     //REQUIRES: amt > 0, amt <= savings.balance
@@ -189,19 +208,23 @@ public class Account implements Writable {
         SavingsAcc savings = this.savings;
         this.balance = balance.add(amt);
         savings.subValue(amt);
+        EventLog.getInstance().logEvent(new Event("Withdrew " + amt + " from savings account"));
     }
 
     //MODIFIES: this
-    //EFFECTS: If debtName is present in one of Account's debtAcc objects name field, pays amt from the debtAcc's value.
-    public Boolean payDebt(String debtName, BigDecimal amt) {
+    //EFFECTS: If name is present in one of Account's debtAcc objects name field, pays amt from the debtAcc's value.
+    public Boolean payDebt(String name, BigDecimal amt) {
         List<DebtAcc> debts = this.debts;
 
         for (DebtAcc d : debts) {
-            if (d.getName().equals(debtName)) {
+            if (d.getName().equals(name)) {
                 d.subValue(amt);
+                EventLog.getInstance().logEvent(new Event("Successfully paid " + amt + " from "
+                        + name + "'s debt account balance"));
                 return true;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Could not find debt account with name: " + name));
         return false;
     }
 
@@ -215,6 +238,7 @@ public class Account implements Writable {
         json.put("savings", savings.toJson());
         json.put("debts", debtsToJson());
         json.put("receipts", receiptsToJson());
+        EventLog.getInstance().logEvent(new Event("Creating account save data..."));
         return json;
     }
 
@@ -267,7 +291,9 @@ public class Account implements Writable {
     //REQUIRES: That a savings goal has been set
     //EFFECTS: Returns an integer based on your surplus that month and your savings goal
     public BigDecimal suggestSavings(BigDecimal surplus) {
-        return surplus.multiply(this.savingsPercentGoal).setScale(2, RoundingMode.CEILING);
+        BigDecimal goal = surplus.multiply(this.savingsPercentGoal).setScale(2, RoundingMode.CEILING);
+        EventLog.getInstance().logEvent(new Event("Calculated suggested savings for this month: " + goal));
+        return goal;
     }
 
     public BigDecimal getBalance() {

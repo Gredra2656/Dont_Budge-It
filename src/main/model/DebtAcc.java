@@ -29,18 +29,21 @@ public class DebtAcc implements HasInterest, Writable {
     //EFFECTS: Calculates addition to debt -- SEE INTERFACE
     @Override
     public void calculateInterest() {
+        EventLog.getInstance().logEvent(new Event("Calculating interest for debt account " + getName()));
         this.value = value.multiply(interest.add(BigDecimal.valueOf(1))).setScale(2, RoundingMode.CEILING);
     }
 
     //EFFECTS: Adds value to the debt -- SEE INTERFACE
     @Override
     public void addValue(BigDecimal payment) {
+        EventLog.getInstance().logEvent(new Event("Added " + payment + " to " + getName() + "'s value"));
         this.value = value.add(payment);
     }
 
     //EFFECTS: Pays debt by amount payment -- SEE INTERFACE
     @Override
     public boolean subValue(BigDecimal payment) {
+        EventLog.getInstance().logEvent(new Event("Removed " + payment + " from " + getName() + "'s value"));
         this.value = value.subtract(payment);
         return this.value.equals(BigDecimal.valueOf(0));
     }

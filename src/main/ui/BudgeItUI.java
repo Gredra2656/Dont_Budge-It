@@ -118,7 +118,7 @@ public class BudgeItUI extends JFrame {
     }
 
     //MODIFIES: this
-    //EFFECTS: Adds the excellent little frog mascot to the image panel in the top right.
+    //EFFECTS: Adds the excellent little frog mascot to the image panel
     private void addImage(GridBagConstraints c) {
         JPanel imagePanel = new JPanel();
         imagePanel.setBackground(Color.WHITE);
