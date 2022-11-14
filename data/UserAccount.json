@@ -13,7 +13,7 @@
     ],
     "receipts": [],
     "month": 1,
-    "balance": 2000,
+    "balance": 2003.5,
     "sources": [
         {
             "name": "Jeff",
@@ -26,6 +26,10 @@
         {
             "name": "Work",
             "value": 5000
+        },
+        {
+            "name": "Loch Ness",
+            "value": 3.5
         }
     ],
     "spg": 0.5,

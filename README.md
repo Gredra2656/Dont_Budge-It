@@ -41,3 +41,21 @@ able to see the breakdown - DONE
 11. As a user, I want to be able to save my budget so that I can edit it later. - DONE
 12. As a user, I want to be able to open my old budget to pick up where I left off. - DONE
 13. As a user, I would like to save my budget for the month to a csv/excel spreadsheet.
+
+## Grading Instructions
+1. My first event related to adding x's to a y is demonstrated in the debt management buttons. If you select the "Add"
+button below the debt management graph, you can construct a debt account which is then added to the main user account.
+By mousing over the column "Current Balance" you can see displayed the current balance of the debt. Then, when you mouse
+over the column "Future Balance" you can see the balance that the debt will be next month with interest applied.
+2. My second event related to adding x's to a y is demonstrated in the debt management buttons. If you select the 
+"Pay Balance" button below the debt management graph, you can enter the name of one of your debtAccounts and enter the
+amount you would like to pay off of that debt.
+3. For further demonstration of x to a y, look at the source graph, where the add and remove buttons allow you to modify
+the sources attached to the account
+4. You can locate the visual components by launching the application and adding various elements through add buttons. 
+When you add an element to the account it is automatically refreshed and displayed. Should this not function as expected
+please push control-R, or go to the Chart menu and select refresh. The graphs and the mascot are my visual components.
+5. You can save the state of the application by going to the file menu tab and selecting save. Alternatively, control-S.
+6. You can load the state of the application by going to the file menu tab and selecting load. Alternatively, control-F.
+
+**NOTE !! For elements like removing a source, removing/paying debt, etc. the name is case sensitive!!**
