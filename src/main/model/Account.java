@@ -191,6 +191,18 @@ public class Account implements Writable {
         savings.subValue(amt);
     }
 
+    public Boolean payDebt(String debtName, BigDecimal amt) {
+        List<DebtAcc> debts = this.debts;
+
+        for (DebtAcc d : debts) {
+            if (d.getName().equals(debtName)) {
+                d.subValue(amt);
+                return true;
+            }
+        }
+        return false;
+    }
+
     //EFFECTS: Creates a JSONObject representing an account to be written to a save file
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
