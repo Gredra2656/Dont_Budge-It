@@ -191,6 +191,8 @@ public class Account implements Writable {
         savings.subValue(amt);
     }
 
+    //MODIFIES: this
+    //EFFECTS: If debtName is present in one of Account's debtAcc objects name field, pays amt from the debtAcc's value.
     public Boolean payDebt(String debtName, BigDecimal amt) {
         List<DebtAcc> debts = this.debts;
 

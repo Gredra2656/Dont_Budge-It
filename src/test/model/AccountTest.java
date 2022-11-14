@@ -178,4 +178,18 @@ public class AccountTest {
                         .setScale(2, RoundingMode.CEILING),
                 testAcc.suggestSavings(testAcc.calculateSurplus()));
     }
+
+    @Test
+    public void testPayDebt() {
+        testAcc.addDebt("Loan", BigDecimal.valueOf(1000), BigDecimal.valueOf(.2));
+        assertTrue(testAcc.payDebt("Loan", BigDecimal.valueOf(500)));
+        assertEquals(BigDecimal.valueOf(500), testAcc.getDebts().get(0).getValue());
+    }
+
+    @Test
+    public void testPayDebtNameInvalid() {
+        testAcc.addDebt("Loan", BigDecimal.valueOf(1000), BigDecimal.valueOf(.2));
+        assertFalse(testAcc.payDebt("Lone", BigDecimal.ONE));
+        assertEquals(BigDecimal.valueOf(1000), testAcc.getDebts().get(0).getValue());
+    }
 }
