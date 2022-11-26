@@ -1,7 +1,7 @@
 package ui;
 
 /**
- * Creates a BudgeItApp object to run the program in a console ui
+ * Creates a BudgeItUI object to run the program
  */
 public class Main {
     public static void main(String[] args) {
