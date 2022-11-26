@@ -59,3 +59,26 @@ please push control-R, or go to the Chart menu and select refresh. The graphs an
 6. You can load the state of the application by going to the file menu tab and selecting load. Alternatively, control-F.
 
 **NOTE !! For elements like removing a source, removing/paying debt, etc. the name is case sensitive!!**
+
+## Phase 4: Task 2
+Fri Nov 25 18:19:06 PST 2022  
+Source added with name: Feeed, and modify balance: 30000  
+Fri Nov 25 18:19:10 PST 2022  
+Source removed with name: Feeed  
+Fri Nov 25 18:19:19 PST 2022  
+Adding a debt account with name: Credit Card, balance: 800, and interest: 0.50  
+Fri Nov 25 18:19:24 PST 2022  
+Could not find debt account with name: 300  
+Fri Nov 25 18:19:32 PST 2022  
+Successfully paid 300 from Credit Card's debt account balance  
+Fri Nov 25 18:19:40 PST 2022  
+Removing a debt account with name: Credit Card  
+Fri Nov 25 18:19:46 PST 2022  
+30000 added to account balance  
+Fri Nov 25 18:19:49 PST 2022  
+10000 withdrawn from account balance  
+Fri Nov 25 18:19:52 PST 2022  
+Deposited 5000 to savings account  
+Fri Nov 25 18:19:55 PST 2022  
+Withdrew 50 from savings account  
+
