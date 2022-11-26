@@ -82,3 +82,15 @@ Deposited 5000 to savings account
 Fri Nov 25 18:19:55 PST 2022  
 Withdrew 50 from savings account  
 
+## Phase 4: Task 3
+
+- I would have liked to refactor all my inner classes of BudgeItUI to their own classes
+- I would have liked to refactor the duplicate methods that are interspersed through Account
+  , Source, SavingsAcc and DebtAcc
+- I likely could have refactored SavingsAcc and DebtAcc to have HasInterest be an abstract class
+  instead of an interface. Would have made it easier to globally modify.
+- I almost certainly could have made an inner abstract class to be used by the button panels. This
+  would make future editing easier as well.
+- I should have removed the old text ui to make the UML graph look cleaner.
+- There was a lot of stuff related to saving and loading in the classes being written to a JSON file. I could have
+  abstracted some commonality to make readability better.
