@@ -2,6 +2,10 @@
 
 ## A simple budget allocation software
 
+### TL;DR (You are not my professor)
+This is a project I completed at UBC in one of my software development courses. It's a very simple budgeting software that I do use to give a visual projection of my income/expenses.
+Consider recommending features, since external goal oriented design is much more fun for me.
+
 ### Story
 This project arose as a result of my poor financial management. After scrambling around at the end of
 every month worrying about whether I can afford to pay all my bills, and getting fed up with all the
